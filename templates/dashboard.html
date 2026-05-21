@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Image Background -->
+<div class="position-relative overflow-hidden p-5 mb-5 text-center text-white rounded-5 shadow-lg"
+    style="background: linear-gradient(rgba(13, 71, 161, 0.7), rgba(0, 0, 0, 0.5)), url('{{ url_for('static', filename='img/hero.png') }}'); background-size: cover; background-position: center;">
+    <div class="col-md-8 mx-auto my-5">
+        <h1 class="display-3 fw-bold mb-3">Welcome, {{ username }}!</h1>
+        <p class="lead mb-4 fw-normal text-white-50">Experience the future of stress-free railway booking. Fast,
+            reliable, and designed for you.</p>
+        <a class="btn btn-primary btn-lg px-5 rounded-pill shadow fw-bold me-2"
+            href="{{ url_for('booking.search') }}">Book Your Journey</a>
+        <a class="btn btn-outline-light btn-lg px-5 rounded-pill fw-bold" href="{{ url_for('booking.history') }}">My
+            Bookings</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-elevate">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-circle bg-orange-light text-orange mb-3 mx-auto">
+                        <i class="fas fa-train fa-2x" style="color: var(--primary-orange);"></i>
+                    </div>
+                    <h4 class="card-title fw-bold">Instant Booking</h4>
+                    <p class="text-muted">Search trains across major Indian routes and book tickets in seconds.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-elevate">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-circle bg-blue-light text-blue mb-3 mx-auto">
+                        <i class="fas fa-heartbeat fa-2x" style="color: var(--primary-blue);"></i>
+                    </div>
+                    <h4 class="card-title fw-bold">Stress Monitoring</h4>
+                    <p class="text-muted">We care about your experience. Our real-time stress tracker ensures smooth
+                        booking.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm hover-elevate">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-circle bg-green-light text-green mb-3 mx-auto">
+                        <i class="fas fa-history fa-2x text-success"></i>
+                    </div>
+                    <h4 class="card-title fw-bold">Easy Management</h4>
+                    <p class="text-muted">Track your journeys, view history, and cancel tickets with a single click.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
