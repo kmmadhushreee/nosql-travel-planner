@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Trains{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0 text-white"><i class="fas fa-search me-2"></i>Find Your Train</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" id="searchForm">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">From Station</label>
+                                <select class="form-select" name="source" required>
+                                    <option value="" selected disabled>Select Source</option>
+                                    <option value="New Delhi">New Delhi (NDLS)</option>
+                                    <option value="Mumbai Central">Mumbai Central (BCT)</option>
+                                    <option value="Howrah">Howrah (HWH)</option>
+                                    <option value="Chennai Central">Chennai Central (MAS)</option>
+                                    <option value="Bangalore City">Bangalore City (SBC)</option>
+                                    <option value="Secunderabad">Secunderabad (SC)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">To Station</label>
+                                <select class="form-select" name="destination" required>
+                                    <option value="" selected disabled>Select Destination</option>
+                                    <option value="New Delhi">New Delhi (NDLS)</option>
+                                    <option value="Mumbai Central">Mumbai Central (BCT)</option>
+                                    <option value="Howrah">Howrah (HWH)</option>
+                                    <option value="Chennai Central">Chennai Central (MAS)</option>
+                                    <option value="Bangalore City">Bangalore City (SBC)</option>
+                                    <option value="Secunderabad">Secunderabad (SC)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Journey Date</label>
+                                <input type="date" class="form-control" name="date" required
+                                    min="{{ get_today_date() }}">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12 text-end">
+                                <button type="submit" class="btn btn-primary px-5 rounded-pill fw-bold">
+                                    <i class="fas fa-search me-2"></i>Search Trains
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if trains %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <h4 class="mb-3">Available Trains</h4>
+            {% for train in trains %}
+            <div class="card mb-3 border-start border-5 border-primary">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="card-title text-primary mb-1">{{ train.name }}</h4>
+                        <div class="text-muted mb-2">
+                            <small class="me-3"><i class="fas fa-clock me-1"></i>Departs: <strong>{{ train.time
+                                    }}</strong></small>
+                            <small><i class="fas fa-calendar-alt me-1"></i> {{ train.date }}</small>
+                        </div>
+                        <span class="badge bg-success">Available</span>
+                    </div>
+                    <div class="text-end">
+                        <h3 class="text-dark fw-bold mb-0">₹{{ train.price }}</h3>
+                        <a href="{{ url_for('booking.book', train_id=train.sys_id, time=train.time, date=train.date) }}"
+                            class="btn btn-warning text-dark fw-bold mt-2 px-4 rounded-pill">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
