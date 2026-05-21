@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Locked Plans{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="fas fa-lock me-2 text-warning"></i>Locked Travel Plans</h2>
+        <a href="{{ url_for('booking.search') }}" class="btn btn-primary rounded-pill shadow-sm">
+            <i class="fas fa-plus me-2"></i>New Plan
+        </a>
+    </div>
+
+    {% if plans %}
+    <div class="row">
+        {% for plan in plans %}
+        <div class="col-lg-6 mb-4">
+            <div
+                class="card shadow border-0 h-100 {{ 'border-start border-5 border-success' if plan.is_improved else 'border-start border-5 border-warning' }}">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4 class="card-title text-primary mb-1">{{ plan.train_id }}</h4>
+                            <p class="text-muted mb-0"><i class="fas fa-calendar-alt me-2"></i>{{ plan.journey_date }}
+                                at {{ plan.journey_time }}</p>
+                        </div>
+                        {% if plan.is_improved %}
+                        <span class="badge bg-success fs-6 animate-pulse"><i class="fas fa-arrow-up me-1"></i>Conditions
+                            Improved!</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Monitoring...</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <div class="p-3 bg-light rounded-3 text-center">
+                                <small class="text-muted d-block text-uppercase fw-bold"
+                                    style="font-size: 0.7rem;">Initial Score</small>
+                                <span class="fs-4 fw-bold text-muted">{{ plan.initial_confidence }}%</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div
+                                class="p-3 {{ 'bg-success-subtle' if plan.is_improved else 'bg-light' }} rounded-3 text-center">
+                                <small class="text-muted d-block text-uppercase fw-bold"
+                                    style="font-size: 0.7rem;">Current Score</small>
+                                <span class="fs-4 fw-bold {{ 'text-success' if plan.is_improved else 'text-dark' }}">
+                                    {{ plan.current_confidence }}%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <small class="text-muted">{{ plan.passenger_name }} + {{ (plan.num_passengers|int) - 1 }}
+                                others</small>
+                        </div>
+                        <form action="{{ url_for('booking.convert_lock', plan_id=plan._id) }}" method="POST">
+                            <button type="submit" class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm">
+                                Book Now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5 bg-white rounded-4 shadow-sm">
+        <div class="mb-3 text-warning opacity-50">
+            <i class="fas fa-lock-open fa-4x"></i>
+        </div>
+        <h3 class="text-muted">No locked plans yet.</h3>
+        <p class="text-muted">Lock a plan when you're not ready to book, and we'll watch the fares for you.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .animate-pulse {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+</style>
+{% endblock %}
