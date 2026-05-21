@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackBook - {% block title %}{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('booking.dashboard') }}">
+                <i class="fas fa-subway me-2"></i>TrackBook
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if session.get('user_id') %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('booking.dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('booking.search') }}">Book Tickets</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('booking.locked_plans') }}">Locked
+                            Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('booking.history') }}">My Bookings</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <span class="badge bg-light text-primary rounded-pill px-3 py-2">
+                            <i class="fas fa-user me-1"></i> {{ session['username'] }}
+                        </span>
+                    </li>
+                    <li class="nav-item ms-3"><a class="btn btn-outline-light btn-sm"
+                            href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 TrackBook. Stress-Free Railway Booking.</p>
+        </div>
+    </footer>
+
+    <!-- Stress Monitor Widget -->
+    <div id="stressToolbar">
+        <div class="stress-label">Stress Monitor</div>
+        <div class="stress-value"><i class="fas fa-mouse me-2"></i>Clicks: <span id="clickDisplay">0</span></div>
+        <div class="stress-value"><i class="fas fa-clock me-2"></i>Time: <span id="timeDisplay">0</span>s</div>
+        <div class="stress-value"><i class="fas fa-redo me-2"></i>Repeats: <span id="searchDisplay">0</span></div>
+        <small class="text-muted mt-1" style="font-size: 0.7em;">Live Demo</small>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/stress_tracker.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>
