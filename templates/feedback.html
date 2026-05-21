@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <div class="card p-5">
+            <h1 class="text-success mb-4">Booking Successful!</h1>
+            <p class="lead">Your ticket has been booked.</p>
+            <hr>
+            <h3>How was your booking experience?</h3>
+            <p>We are constantly trying to improve our service to reduce user stress.</p>
+
+            <form id="feedbackForm" class="mt-4">
+                <div class="btn-group" role="group" aria-label="Feedback">
+                    <button type="button" class="btn btn-outline-success">😊 Smooth</button>
+                    <button type="button" class="btn btn-outline-warning">😐 Okay</button>
+                    <button type="button" class="btn btn-outline-danger">😫 Stressful</button>
+                </div>
+                <div class="mt-3">
+                    <textarea class="form-control" placeholder="Any additional comments?" rows="3"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary mt-3"
+                    onclick="alert('Thank you for your feedback!'); window.location.href='{{ url_for('booking.dashboard') }}'">Submit
+                    Feedback</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
